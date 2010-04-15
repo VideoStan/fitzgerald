@@ -172,8 +172,8 @@
             $protocol = isset($_SERVER['HTTPS']) ? 'https' : 'http';
             $host = (preg_match('%^http://|https://%', $path) > 0) ? '' : "$protocol://" . $_SERVER['HTTP_HOST'];
             $uri = is_string($this->options->mountPoint) ? $this->options->mountPoint : '';
-            $this->session->error = $this->error;
-            $this->session->success = $this->success;
+            if (isset($this->error)) $this->session->error = $this->error;
+            if (isset($this->success)) $this->session->success = $this->success;
             header("Location: $host$uri$path");
             return false;
         }
