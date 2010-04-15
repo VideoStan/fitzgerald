@@ -134,13 +134,13 @@
         public function handleError($number, $message, $file, $line) {
             header("HTTP/1.0 500 Server Error");
             echo $this->render('500');
-            die();
+            exit(1);
         }
 
         public function show404() {
             header("HTTP/1.0 404 Not Found");
             echo $this->render('404');
-            die();
+            exit(0);
         }
 
         public function get($url, $methodName, $conditions=array()) {
