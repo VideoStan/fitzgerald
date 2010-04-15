@@ -121,8 +121,11 @@
 
         public function __construct($options=array()) {
             $this->options = new ArrayWrapper($options);
-            session_name('fitzgerald_session');
-            session_start();
+            if (is_null($this->options->sessions)) $this->options->sessions = true;
+            if ($this->options->sessions) {
+                session_name('fitzgerald_session');
+                session_start();
+            }
             $this->session = new SessionWrapper;
             $this->request = new RequestWrapper;
             set_error_handler(array($this, 'handleError'), 2);
