@@ -128,7 +128,9 @@
             }
             $this->session = new SessionWrapper;
             $this->request = new RequestWrapper;
-            set_error_handler(array($this, 'handleError'), 2);
+            $errorLevel = $this->options->errorLevel;
+            if (is_null($errorLevel) || !is_int($errorLevel)) $errorLevel = E_WARNING;
+            set_error_handler(array($this, 'handleError'), $errorLevel);
         }
 
         public function handleError($number, $message, $file, $line) {
