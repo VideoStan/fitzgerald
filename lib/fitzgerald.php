@@ -11,15 +11,25 @@
 
     class Template {
         private $fileName;
-        private $root;
+        private $root = array();
         public function __construct($root, $fileName) {
             $this->fileName = $fileName;
-            $this->root = $root;
+            $this->root = (array)$root;
         }
         public function render($locals) {
+        	   $success = false;
             extract($locals);
             ob_start();
-            include($this->root . 'views/' . $this->fileName . '.php');
+            
+            foreach ($this->root as $root) {
+               $file = $root . 'views/' . $this->fileName . '.php';
+               if (file_exists($file)) {	
+                  include $file;
+                  $success = true;
+                  break;
+                }
+            }
+            // @todo render an emergency 500 in heredoc/nowdoc if !$success
             return ob_get_clean();
         }
     }
@@ -192,12 +202,12 @@
             }
 
             if (is_string($this->options->layout)) {
-                $contentTemplate = new Template($this->root(), $fileName);              // create content template
+                $contentTemplate = new Template($this->views(), $fileName);              // create content template
                 $variableArray['content'] = $contentTemplate->render($variableArray);   // render and store contet
-                $layoutTemplate = new Template($this->root(), $this->options->layout);  // create layout template
+                $layoutTemplate = new Template($this->views(), $this->options->layout);  // create layout template
                 return $layoutTemplate->render($variableArray);                         // render layout template and return
             } else {
-                $template = new Template($this->root(), $fileName);                     // create template
+                $template = new Template($this->views(), $fileName);                     // create template
                 return $template->render($variableArray);                               // render template and return
             }
         }
@@ -250,6 +260,11 @@
             if (method_exists($this, $methodName)) {
                 array_push($this->mappings, array($httpMethod, $url, $methodName, $conditions));
             }
+        }
+
+        protected function views()
+        {
+            return array($this->root());
         }
 
         protected function root() {
