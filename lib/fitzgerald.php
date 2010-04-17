@@ -37,7 +37,7 @@
 
             $requestMethod = $_SERVER['REQUEST_METHOD'];
             $requestUri = str_replace($mountPoint, '', $_SERVER['REQUEST_URI']);
-
+            if (empty($requestUri)) $requestUri = '/';
             $this->url = $url;
             $this->method = $httpMethod;
             $this->conditions = $conditions;
