@@ -97,14 +97,27 @@
     }
 
     class SessionWrapper {
+        protected $root = null;
+
+        public function __construct($root = null) {
+            $this->root = $root;
+            
+        }
         public function __get($key) {
             global $_SESSION;
-            return isset($_SESSION[$key]) ? $_SESSION[$key] : null;
+            if (is_null($this->root)) {
+                return isset($_SESSION[$key]) ? $_SESSION[$key] : null;
+            }
+            return isset($_SESSION[$this->root[$key]) ? $_SESSION[$this->root][$key] : null;
         }
 
         public function __set($key, $value) {
             global $_SESSION;
-            $_SESSION[$key] = $value;
+            if (is_null($this->root)) {
+                $_SESSION[$key] = $value;
+            } else {
+                $_SESSION[$this->root][$key] = $value;
+            }    
             return $value;
         }
     }
@@ -136,7 +149,8 @@
                 session_name('fitzgerald_session');
                 session_start();
             }
-            $this->session = new SessionWrapper;
+
+            $this->session = new SessionWrapper($this->options->sessionRootKey);
             $this->request = new RequestWrapper;
             $errorLevel = $this->options->errorLevel;
             if (is_null($errorLevel) || !is_int($errorLevel)) $errorLevel = E_WARNING;
