@@ -20,10 +20,10 @@
         	   $success = false;
             extract($locals);
             ob_start();
-            
+
             foreach ($this->root as $root) {
                $file = $root . 'views/' . $this->fileName . '.php';
-               if (file_exists($file)) {	
+               if (file_exists($file)) {
                   include $file;
                   $success = true;
                   break;
@@ -101,7 +101,7 @@
 
         public function __construct($root = null) {
             $this->root = $root;
-            
+
         }
         public function __get($key) {
             global $_SESSION;
@@ -117,7 +117,7 @@
                 $_SESSION[$key] = $value;
             } else {
                 $_SESSION[$this->root][$key] = $value;
-            }    
+            }
             return $value;
         }
     }
