@@ -101,8 +101,13 @@
 
         public function __construct($root = null) {
             $this->root = $root;
-
         }
+
+        public static function open($name = 'fitzgerald_session') {
+            session_name($name);
+            session_start();
+        }
+
         public function __get($key) {
             global $_SESSION;
             if (is_null($this->root)) {
@@ -149,12 +154,12 @@
 
         public function __construct($options=array()) {
             $this->options = new ArrayWrapper($options);
-            if (is_null($this->options->sessions)) $this->options->sessions = true;
-            if ($this->options->sessions) {
-                session_name('fitzgerald_session');
-                session_start();
-            }
 
+            $openSession  = true;
+            if (!is_null($this->options->sessions)) {
+            	$openSession = (bool)$this->options->session;
+            }
+            if ($openSession) SessionWrapper::open();
             $this->session = new SessionWrapper($this->options->sessionRootKey);
             $this->request = new RequestWrapper;
             $errorLevel = $this->options->errorLevel;
