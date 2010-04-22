@@ -120,6 +120,11 @@
             }
             return $value;
         }
+
+        public function close()
+        {
+            session_write_close();
+        }
     }
 
     class RequestWrapper {
@@ -200,6 +205,7 @@
             $uri = is_string($this->options->mountPoint) ? $this->options->mountPoint : '';
             if (isset($this->error)) $this->session->error = $this->error;
             if (isset($this->success)) $this->session->success = $this->success;
+            $this->session->close();
             header("Location: $host$uri$path");
             return false;
         }
