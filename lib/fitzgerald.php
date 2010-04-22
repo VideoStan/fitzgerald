@@ -108,7 +108,7 @@
             if (is_null($this->root)) {
                 return isset($_SESSION[$key]) ? $_SESSION[$key] : null;
             }
-            return isset($_SESSION[$this->root[$key]) ? $_SESSION[$this->root][$key] : null;
+            return isset($_SESSION[$this->root][$key]) ? $_SESSION[$this->root][$key] : null;
         }
 
         public function __set($key, $value) {
