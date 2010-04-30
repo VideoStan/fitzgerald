@@ -56,6 +56,7 @@
 
                 $paramNames = array();
                 $paramValues = array();
+                $requestUri = parse_url($requestUri, PHP_URL_PATH);
 
                 preg_match_all('@:([a-zA-Z]+)@', $url, $paramNames, PREG_PATTERN_ORDER);                    // get param names
                 $paramNames = $paramNames[1];                                                               // we want the set of matches
