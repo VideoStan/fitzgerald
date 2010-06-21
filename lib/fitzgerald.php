@@ -133,7 +133,8 @@
         }
     }
 
-    class RequestWrapper {
+    class RequestWrapper extends ArrayIterator {
+
         public function __get($key) {
             global $_REQUEST;
             return isset($_REQUEST[$key]) ? $_REQUEST[$key] : null;
@@ -143,6 +144,30 @@
             global $_REQUEST;
             $_REQUEST[$key] = $value;
             return $value;
+        }
+
+    	  public function count() {
+    	      return count($_REQUEST);
+    	  }
+
+        public function rewind() {
+            return reset($_REQUEST);
+        }
+
+        public function current() {
+            return current($_REQUEST);
+        }
+
+        public function key() {
+            return key($_REQUEST);
+        }
+
+        public function next() {
+            return next($_REQUEST);
+        }
+
+        public function valid() {
+            return key($_REQUEST) !== null;
         }
     }
 
