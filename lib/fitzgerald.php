@@ -211,6 +211,15 @@
             echo $this->render('404');
             exit(0);
         }
+        public function sendHeaders($headers) {
+            foreach ($headers as $headerKey => $headerValue) {
+            	$this->sendHeader($headerKey, $headerValue);
+            }
+        }
+
+        public function sendHeader($headerKey, $headerValue) {
+           header($headerKey . ':' . $headerValue, true);
+        }
 
         public function get($url, $methodName, $conditions=array()) {
            $this->event('get', $url, $methodName, $conditions);
