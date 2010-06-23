@@ -211,13 +211,13 @@
             echo $this->render('404');
             exit(0);
         }
-        
+
         public function error($body, $statusCode = 400) {
             $this->halt($body, $statusCode);
         }
 
         public function halt($body = '', $statusCode = 200, $headers = array()) {
-        	   $this->setResponseCode($statusCode);
+            $this->setResponseCode($statusCode);
             $this->sendHeaders($headers);
             echo $body;
             exit(0);
