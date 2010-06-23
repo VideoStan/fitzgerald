@@ -197,14 +197,17 @@
             header('placeholder', true, $code);
         }
 
+        /**
+         * @todo handle exceptions
+         */
         public function handleError($number, $message, $file, $line) {
-            header("HTTP/1.0 500 Server Error");
+            $this->setResponseCode(500);
             echo $this->render('500', compact('number', 'message', 'file', 'line'));
             exit(1);
         }
 
         public function show404() {
-            header("HTTP/1.0 404 Not Found");
+            $this->setResponseCode(404);
             echo $this->render('404');
             exit(0);
         }
