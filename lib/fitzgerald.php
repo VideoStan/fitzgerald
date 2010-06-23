@@ -193,6 +193,10 @@
             set_error_handler(array($this, 'handleError'), $errorLevel);
         }
 
+        public function setResponseCode($code) {
+            header('placeholder', true, $code);
+        }
+
         public function handleError($number, $message, $file, $line) {
             header("HTTP/1.0 500 Server Error");
             echo $this->render('500', compact('number', 'message', 'file', 'line'));
