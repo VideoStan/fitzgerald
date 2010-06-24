@@ -354,6 +354,18 @@
             return $this->root() . $path;
         }
 
+        // @todo don't use this static, should be in a helpers class instead and cached
+        public static function baseUrl()
+        {
+            $scheme = $scheme = !isset($_SERVER['HTTPS']) || ($_SERVER['HTTPS'] == 'off') ? 'http' : 'https';
+            $port = $_SERVER['SERVER_PORT'];
+            $baseUrl = $scheme . '://' . $_SERVER['HTTP_HOST'];
+            if (($scheme == 'http' && $port != 80) || ($scheme == 'https' && $port != 443)) {
+            	$baseUrl .= ':' . $port;
+            }
+            return $baseUrl;
+        }
+
         private function processRequest() {
             for ($i = 0; $i < count($this->mappings); $i++) {
                 $mapping = $this->mappings[$i];
