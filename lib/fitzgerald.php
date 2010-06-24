@@ -330,8 +330,13 @@
             $args = array();
 
             foreach ($reflection->getParameters() as $i => $param) {
-                $args[$param->name] = $params[$param->name];
+                if (!isset($params[$param->name]) && $param->isDefaultValueAvailable()) {
+                	$args[$param->name] = $param->getDefaultValue();
+                } else {
+                	$args[$param->name] = $params[$param->name];
+                }
             }
+
             return call_user_func_array(array($this, $methodName), $args);
         }
 
